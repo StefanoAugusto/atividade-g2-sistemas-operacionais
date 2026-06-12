@@ -1,19 +1,61 @@
-### Trabalho G2 de Sistemas Operacionais
-#### Stefano Augusto Mossi - 1131685
+# Trabalho G2 — Sistemas Operacionais
 
-#### Item 1: 
-Escolhi por fazer uma aplicação com python porque é o que mais tenho familiaridade de atuar.
-A ideia aqui foi fazer um sistema CRUD para controle de atividades, fazendo requisições em uma API rest com Flask.
-Não houve uma dificuldade em aplicar o desenvolvimento aqui, já atuamos com flask na matéria de Computação Distribuida e Hardware.
-Ainda assim, para o front-end, fiz o uso de IA, por não ter tanta prática.
-Então, fiz o desenvolvimento do back-end e depois solicitei a LLM para fazer a criação de um front-end.
+**Aluno:** Stefano Augusto Mossi  
+**Matrícula:** 1131685
 
-#### Item 2:
-Apesar de ser o item 2, esse foi o meu terceiro passo, que foi alterar o dockerfile, conforme a estrutura de referência. Pesquisando sobre a diferença entre o ENTRYPOINT e o CMD, optei pelo CMD, porque espero um comportamento padrão e que eu possa facilmente passar outro comando no docker run, visto que o ENTRYPOINT é mais difícil de substituir.
+---
 
-#### Item 3:
-Apesar de ser o item 3, esse foi o segundo passo, que foi realizar a atualização do app.py para contar com o redis, enfrentei o erro 1, conforme o print. Isso estava acontecendo porque o redis não está aponhtando direto no meu computador de desenvolvimento, mas sim pro docker.
-Então, a partir do "erro 1", eu fiquei "limitado" a testar o sistema apenas com o docker, que é o que foi desenvolvido logo após o "item 3".
+## Item 1 — Aplicação CRUD com Flask
 
-#### Item 4:
-Enquanto fazia o docker composer build meu PC desligou, e durante a segunda tentativa, ocorreu o "erro 2". O erro ocorreu porque eu fui direto para o projeto antes de abrir o docker desktop. Após abri-lo, o erro parou de acontecer. Então, começou o "erro 3", que era o wsl não estar instalado, tive que habilitar as features do windows como virtual machine platform, windows hypervisor platform e windows subsystem for linux. Passei algumas horas tentando resolver esse bug e seguir algumas instruções de fóruns da internet (https://github.com/microsoft/WSL/issues/9460), lembrei que tenho o docker instalado em outro PC, então fiz o commit e testarei nesse outro PC.
+Escolhi desenvolver a aplicação em Python por ser a linguagem com a qual tenho mais familiaridade.
+
+A proposta foi criar um sistema CRUD para controle de atividades, com requisições a uma API REST construída com Flask. O desenvolvimento não apresentou grandes dificuldades, pois já trabalhamos com Flask na disciplina de Computação Distribuída e Hardware.
+
+Para o front-end, utilizei IA como suporte, dado que não tenho tanta prática nessa área. O fluxo de trabalho foi: desenvolver o back-end primeiro e, em seguida, solicitar à LLM a criação da interface.
+
+---
+
+## Item 2 — Configuração do Dockerfile
+
+> **Ordem de execução:** este foi, na prática, o **terceiro passo** realizado.
+
+Nesta etapa, alterei o `Dockerfile` conforme a estrutura de referência. Ao pesquisar sobre a diferença entre `ENTRYPOINT` e `CMD`, optei pelo `CMD`, pois:
+
+- Permite um comportamento padrão para o container;
+- Facilita a substituição do comando via `docker run`, ao contrário do `ENTRYPOINT`, que é mais difícil de sobrescrever.
+
+---
+
+## Item 3 — Integração com Redis
+
+> **Ordem de execução:** este foi, na prática, o **segundo passo** realizado.
+
+Nesta etapa, atualizei o `app.py` para incluir o Redis. Durante o processo, encontrei o **Erro 1** (ver print anexo), causado pelo fato de o Redis não estar apontando para o meu ambiente local de desenvolvimento, mas sim para o Docker.
+
+A partir desse ponto, fiquei limitado a testar o sistema exclusivamente via Docker. Após executar `docker compose up`, o sistema voltou a funcionar corretamente, conforme demonstrado na **Evidência 5**.
+
+---
+
+## Item 4 — Docker Compose e Resolução de Erros
+
+Durante o `docker compose build`, meu PC desligou inesperadamente. Na segunda tentativa, ocorreu o **Erro 2**, causado por ter acessado o projeto sem antes abrir o Docker Desktop. Após abri-lo, esse erro foi resolvido.
+
+Em seguida, surgiu o **Erro 3**: o WSL não estava instalado. Para resolver, habilitei as seguintes features do Windows:
+
+- Virtual Machine Platform
+- Windows Hypervisor Platform
+- Windows Subsystem for Linux (WSL)
+
+Passei algumas horas tentando resolver o problema seguindo instruções de fóruns, incluindo [esta thread no GitHub](https://github.com/microsoft/WSL/issues/9460). Como não obtive sucesso, lembrei que tenho o Docker instalado em outro PC — fiz o commit e migrei os testes para essa máquina.
+
+No segundo PC, o build foi bem-sucedido. Ainda assim, apareceu o **Erro 4**: faltava a flag `-r` ao instalar os requirements (`pip install -r requirements.txt`). Após a correção, o build foi concluído com sucesso, conforme **Evidência 3**.
+
+Por fim, executei `docker ps` para listar os containers em execução, conforme **Evidência 6**.
+
+Além disso, ao finalizar a a atividade, fiz o **USO DE IA/LLM** apenas para a formatação do arquivo markdown, sendo utilizado o seguinte prompt: 
+
+"Preciso que você melhore a formatação desse markdown. Não faça alterações no texto, apenas formate-o e deixe pronto para publicação."
+
+
+## Conclusão
+Ao finalizar a atividade, pude botar em práticas as teorias explicadas em aula pelo Professor. Entendendo como funciona um container e quando usar, entender qual é a melhor versão para cada aplicação e também botar em prática um pouco de programação.

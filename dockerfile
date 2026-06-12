@@ -9,7 +9,7 @@ WORKDIR /app
 COPY requirements.txt .
 
 #Instala as dependências para que rodem na imagem.
-RUN pip install requirements.txt
+RUN pip install -r requirements.txt
 COPY . .
 
 # Documenta que a app usa a porta 5000 (porta padrão do Flask). 

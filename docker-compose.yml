@@ -1,9 +1,12 @@
+#Aqui é a versão do docker compose, e será usada a mesma versão que o professor utilizou.
 version: "3.8"
 
 services:
   app:
+  #Pasta atual, onde tem o Dockerfile, e o código da aplicação.
     build: .
     ports:
+    #Porta que o container vai rodar, já que a aplicação é isolada, precisa da porta pra conseguir acessar. Padrão 5000 do flask.
       - "5000:5000"
     environment:
       - REDIS_HOST=redis
@@ -11,6 +14,7 @@ services:
       - redis
 
   redis:
+  #Procurei por uma versão do redis que seja leve, menor e com o download mais rápido, para fazer menos consumo
     image: redis:7-alpine
     command: ["redis-server", "--appendonly", "yes"]
     volumes:

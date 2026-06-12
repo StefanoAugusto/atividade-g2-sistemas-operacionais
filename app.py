@@ -7,7 +7,7 @@ app = Flask(__name__)
 
 r = redis.Redis(host=os.environ.get('REDIS_HOST', 'localhost'), port=6379, decode_responses=True)
 
-#Uso de IA: Utilizei O IA para fazer o front-end porque não conto com tanta prática
+#Uso de IA: Utilizei O IA para fazer o front-end porque não gosto tanto de fazer esse desenvolvimento, e como a aplicação não era o foco, optei por usar uma LLM para gerar um front end simples.
 HTML = """<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
