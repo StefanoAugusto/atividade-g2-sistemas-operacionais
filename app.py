@@ -1,10 +1,11 @@
 from flask import Flask, jsonify, request
+import os
+import redis
 
 app = Flask(__name__)
 
-#variáveis para salvar ID e tasks
-tasks = []
-nextId = 1
+
+r = redis.Redis(host=os.environ.get('REDIS_HOST', 'localhost'), port=6379, decode_responses=True)
 
 #Uso de IA: Utilizei O IA para fazer o front-end porque não conto com tanta prática
 HTML = """<!DOCTYPE html>
@@ -261,20 +262,21 @@ ele vai ter um retorno parecido o que está no "Evidencia 1.png".
 """
 @app.route('/api/tasks', methods=['GET'])
 def getTasks():
-    return jsonify(tasks)
+    dados = r.hgetall('tasks')
+    lista = [{'id': int(i), 'text': t} for i, t in dados.items()]
+    lista.sort(key=lambda x: x['id'])
+    return jsonify(lista)
 
 # Requisição post para criar uma atividade
 @app.route('/api/tasks', methods=['POST'])
 def createTask():
-    global nextId
     data = request.get_json(silent=True) or {}
     text = (data.get('text') or '').strip()
     if not text:
         return jsonify({'error': 'O texto está vazio'}), 400
-    task = {'id': nextId, 'text': text}
-    tasks.append(task)
-    nextId += 1
-    return jsonify(task), 201
+    novoId = r.incr('next_id')
+    r.hset('tasks', novoId, text)
+    return jsonify({'id': novoId, 'text': text}), 201
 
 #Requisição que atualiza a task
 @app.route('/api/tasks/<int:taskId>', methods=['PUT'])
@@ -283,21 +285,18 @@ def updateTask(taskId):
     text = (data.get('text') or '').strip()
     if not text:
         return jsonify({'error': 'O texto está vazio'}), 400
-    for task in tasks:
-        if task['id'] == taskId:
-            task['text'] = text
-            return jsonify(task)
-    return jsonify({'error': 'Tarefa não encontrada'}), 404
+    if not r.hexists('tasks', taskId):
+        return jsonify({'error': 'Tarefa não encontrada'}), 404
+    r.hset('tasks', taskId, text)
+    return jsonify({'id': taskId, 'text': text})
 
-#Deleta a rota
 @app.route('/api/tasks/<int:taskId>', methods=['DELETE'])
 def deleteTask(taskId):
-    global tasks
-    tasks = [t for t in tasks if t['id'] != taskId]
+    r.hdel('tasks', taskId)
     return '', 204
 
 
 
 if __name__ == '__main__':
     print("Servidor rodando em http://localhost:5000")
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=5000)
