@@ -61,7 +61,7 @@ Além disso, ao finalizar a a atividade, fiz o **USO DE IA/LLM** apenas para a f
 
 Durante o desenvolvimento da imagem docker fiz uma tentativa de otimização do seu tamanho, utilizando a flag `--no-cache-dir` no comando `pip install`. O objetivo era diminuir o espaço da imagem final, evitando o armazenamento de arquivos temporários de instalação das dependências.
 
-No fim das contas a diferença foi miníma, um pouco mais de 3MB, comparando os dois arquivos pelo docker desktop (Evidencia 9). Então optei por não utilizar a flag, preferindo a configuração mais simples sem impacto relevante no resultado final.
+No fim das contas a diferença foi mínima, um pouco mais de 3MB, comparando os dois arquivos pelo docker desktop (Evidencia 9). Então optei por não utilizar a flag, preferindo a configuração mais simples sem impacto relevante no resultado final.
 
 ## Conclusão
 Ao finalizar a atividade, conseguimos botar em práticas as teorias explicadas em aula pelo Professor. Entendendo como funciona um container e quando usar, entender qual é a melhor versão para cada aplicação e também botar em prática um pouco de programação.
