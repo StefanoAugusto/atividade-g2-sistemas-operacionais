@@ -1,4 +1,4 @@
-#Aqui é a versão do docker compose, e será usada a mesma versão que o professor utilizou.
+#Aqui é a versão do docker compose, e será usada a mesma versão que o professor utilizou, pois ela é estável e suporta recursos importantes para a construção do ambiente.
 version: "3.8"
 
 services:
@@ -11,14 +11,23 @@ services:
     environment:
       - REDIS_HOST=redis
     depends_on:
-      - redis
+      redis:
+        condition: service_healthy
 
   redis:
-  #Procurei por uma versão do redis que seja leve, menor e com o download mais rápido, para fazer menos consumo
+  #Procuramos por uma versão do redis que seja leve, menor e com o download mais rápido, para fazer menos consumo.
+  #Media de tamanho 30MB e com uma imagem oficial do redis, garantindo compatibilidade e padronização do ambiente.
+  #Adicionamos um healthcheck para garantir que o serviço de redis esteja pronto antes de iniciar a aplicação, para evitar erros de conexão.
     image: redis:7-alpine
     command: ["redis-server", "--appendonly", "yes"]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
     volumes:
       - redis-data:/data
 
+#Criamos um volume que será usado para armazenar os dados do redis, garantindo que eles persistam mesmo que o container seja reiniciado ou removido.
 volumes:
   redis-data:
